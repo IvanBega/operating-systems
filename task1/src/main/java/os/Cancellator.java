@@ -5,6 +5,7 @@ import java.util.Scanner;
 public class Cancellator {
     private boolean active = true;
     private boolean blocked = false;
+    private boolean interrupted = false;
     public Cancellator() {
     }
     public boolean isBlocked() {
@@ -25,6 +26,7 @@ public class Cancellator {
                 break;
             case 3:
                 active = false;
+                interrupted = true;
                 return true;
         }
         return false;
@@ -43,4 +45,5 @@ public class Cancellator {
     public boolean isActive() {
         return active;
     }
+    public boolean wasInterrupted() { return interrupted; }
 }
