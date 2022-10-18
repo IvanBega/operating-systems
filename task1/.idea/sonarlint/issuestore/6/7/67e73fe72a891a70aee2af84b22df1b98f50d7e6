@@ -1,0 +1,17 @@
+
+H
+java:S2789#"2Replace this null literal by an "Optional" object.(ÙöÑµ
+f
+java:S3655."PCall "Optional#isPresent()" or "!Optional#isEmpty()" before accessing the value.(¾¯ÌŒ
+‚
+java:S1450"`Remove the "computationThread" field and declare it as a local variable in the relevant methods.(ÂŸ°¿ÿÿÿÿÿ8Û³¶¾0
+t
+java:S21428"^Either re-interrupt this method or rethrow the "InterruptedException" that can be caught here.(ä ¹€
+‚
+java:S1130>"lRemove the declaration of thrown exception 'java.io.IOException', as it cannot be thrown from method's body.(ØÒ’
+
+java:S1130>"wRemove the declaration of thrown exception 'java.lang.InterruptedException', as it cannot be thrown from method's body.(ØÒ’
+t
+java:S2142D"^Either re-interrupt this method or rethrow the "InterruptedException" that can be caught here.(ä ¹€
+S	java:S106E"9Replace this use of System.out or System.err by a logger.(¨¶ÑÍşÿÿÿÿ
+N	java:S106Q"9Replace this use of System.out or System.err by a logger.(ÅÃÎ½

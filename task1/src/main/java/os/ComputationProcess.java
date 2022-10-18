@@ -38,17 +38,18 @@ public class ComputationProcess {
             if (!result.isPresent()) {
                 // soft fail
                 if (attempts == MAX_ATTEMPTS - 1) {
+                    // hard fail if max amount of attempts reached
                     finished = true;
-                    command = Character.toString(type).toLowerCase();
+                    command = "hard_limit_reached";
                 }
             } else if (result.get().isPresent()) {
                 // value
                 x = result.get().get();
-                command = Character.toString(type) + x;
+                command = "v" + x;
                 finished = true;
             } else {
                 // undefined
-                command = Character.toString(type);
+                command = "undefined";
                 finished = true;
 
             }
@@ -56,7 +57,7 @@ public class ComputationProcess {
         } catch (InterruptedException e) {
             // hard fail
             finished = true;
-            command = (Character.toString(type) + Character.toString(type)).toLowerCase();
+            command = "hard";
         }
     }
     private static void listenForCommand() throws IOException, InterruptedException {
@@ -74,7 +75,7 @@ public class ComputationProcess {
         if (timeout.wasInterrupted()) {
             // was interrupted - function not defined
             finished = true;
-            command = Character.toString(type);
+            command = "undefined";
         }
     }
     private static void sendCommand(String cmd) {

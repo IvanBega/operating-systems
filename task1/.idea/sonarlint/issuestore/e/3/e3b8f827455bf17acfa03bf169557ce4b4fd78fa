@@ -1,0 +1,11 @@
+
+`	java:S112"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ
+n	java:S135"YReduce the total number of break and continue statements in this loop to use at most one.(©§»š
+,
+java:S1700"Rename field "timeout"(şßªı
+_
+java:S2583"DChange this condition so that it does not always evaluate to "false"(Ğ¶ÕÎùÿÿÿÿ
+n
+java:S1450"XRemove the "startTime" field and declare it as a local variable in the relevant methods.(ÀÅü¿
+t
+java:S2142"^Either re-interrupt this method or rethrow the "InterruptedException" that can be caught here.(ä ¹€

@@ -1,0 +1,44 @@
+
+`	java:S112<"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ
+<
+java:S1170"!Make this final field static too.(ÌŞ‰ÿÿÿÿÿ
+v
+java:S1450"`Remove the "computationFailed" field and declare it as a local variable in the relevant methods.(ô•£
+l
+java:S1450"VRemove the "fReader" field and declare it as a local variable in the relevant methods.(§°ûª
+q
+java:S1450"VRemove the "gReader" field and declare it as a local variable in the relevant methods.(Š¥Å‡üÿÿÿÿ
+\
+java:S1075"ARefactor your code to get this URI from a customizable parameter.(ğ Ë®úÿÿÿÿ
+\
+java:S1075"ARefactor your code to get this URI from a customizable parameter.(ÿ‹¹¯úÿÿÿÿ
+V	java:S125""<This block of commented-out lines of code should be removed.(€¶ Ñşÿÿÿÿ
+S	java:S106("9Replace this use of System.out or System.err by a logger.(¼ÙãÉùÿÿÿÿ
+Q	java:S125'"<This block of commented-out lines of code should be removed.(Òáø›
+t
+java:S2142;"^Either re-interrupt this method or rethrow the "InterruptedException" that can be caught here.(ä ¹€
+S	java:S106D"9Replace this use of System.out or System.err by a logger.(›êŞÂúÿÿÿÿ
+M	java:S106E"9Replace this use of System.out or System.err by a logger.(›ë£U
+N	java:S106H"9Replace this use of System.out or System.err by a logger.(àÓ¨¨
+N	java:S106I"9Replace this use of System.out or System.err by a logger.(½¿ê
+8
+java:S3626i"Remove this redundant jump.(ûÁİ…8ÛÁ­¸¾0
+U	java:S106_"9Replace this use of System.out or System.err by a logger.(õŒÊ´8§û–¸¾0
+Z	java:S106d"9Replace this use of System.out or System.err by a logger.(š˜’Áùÿÿÿÿ8¨û–¸¾0
+U	java:S106h"9Replace this use of System.out or System.err by a logger.(ŸàßË8åä˜¸¾0
+Q	java:S125r"<This block of commented-out lines of code should be removed.(ò…–È
+U	java:S106y"9Replace this use of System.out or System.err by a logger.(ı²äÕ8çä˜¸¾0
+“
+java:S1130‰"wRemove the declaration of thrown exception 'java.lang.InterruptedException', as it cannot be thrown from method's body.(‘Ãà„ùÿÿÿÿ
+V	java:S106‘"9Replace this use of System.out or System.err by a logger.(œçİè8“™¸¾0
+V	java:S106š"9Replace this use of System.out or System.err by a logger.(öåœô8©çª¸¾0
+J
+java:S1068"/Remove this unused "maxAttempts" private field.(ÌŞ‰ÿÿÿÿÿ
+C
+java:S1068"-Remove this unused "fAttempts" private field.(Âç˜
+H
+java:S1068"-Remove this unused "gAttempts" private field.(‹ïŒÜÿÿÿÿÿ
+K
+java:S1068"5Remove this unused "computationFailed" private field.(ô•£
+M
+java:S1144"6Remove this unused private "failedComputation" method.(¸ Î¨

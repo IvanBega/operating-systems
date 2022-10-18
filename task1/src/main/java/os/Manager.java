@@ -64,11 +64,11 @@ public class Manager {
         cancelThread.start();
         String result1 = fReader.readLine();
 
-        FunctionStatus fStatus = analyzeF(result1);
+        FunctionStatus fStatus = analyze(result1, 'f');
         System.out.println(result1);
         System.out.println(fStatus);
         String result2 = gReader.readLine();
-        FunctionStatus gStatus = analyzeG(result2);
+        FunctionStatus gStatus = analyze(result2, 'g');
         System.out.println(result2);
         System.out.println(gStatus);
 
@@ -91,22 +91,27 @@ public class Manager {
     }
 
     private void summarize(FunctionStatus fStatus, FunctionStatus gStatus) {
+        if (isStatusFail(fStatus)) {
+            failedComputation('F', fStatus);
+            return;
+        }
+        if (isStatusFail(gStatus)) {
+            failedComputation('G', gStatus);
+            return;
+        }
         if (fStatus == FunctionStatus.VALUE && gStatus == FunctionStatus.VALUE) {
             System.out.println("[Manager]: Result of computation is " +
                     fResult.get() * gResult.get());
             return;
         }
-        if (fStatus == FunctionStatus.FAIL_CANCELLED || gStatus == FunctionStatus.FAIL_CANCELLED) {
-            System.out.println("[Manager]: Computation failed! Reason: cancelled by user");
-            return;
-        }
-        if (fStatus == FunctionStatus.UNDEFINED || gStatus == FunctionStatus.UNDEFINED) {
-            System.out.println("[Manager]: Result of computation is not defined");
-            return;
-        }
+        System.out.println("[Manager]: Result of computation is not defined");
 
     }
 
+    private boolean isStatusFail(FunctionStatus status) {
+        return status == FunctionStatus.FAIL_CANCELLED || status == FunctionStatus.FAIL_HARD ||
+                status == FunctionStatus.FAIL_LIMIT_REACHED;
+    }
     private void sendCommand(String line, BufferedWriter writer) throws IOException {
         writer.write(line);
         writer.newLine();
@@ -141,18 +146,18 @@ public class Manager {
         sendCommand(argument, gWriter);
     }
 
-    private void failedComputation(char funcType, String funcReason) throws IOException {
-        System.out.println("[Manager]: Function " + funcType + " failed! Reason: " + funcReason);
-        if (!fFinished) {
-            fFinished = true;
-            sendCommand("b", fWriter);
+    private void failedComputation(char funcType, FunctionStatus status) {
+        switch (status) {
+            case FAIL_CANCELLED:
+                System.out.println("[Manager]: Computation failed! Reason: cancelled by user");
+                break;
+            case FAIL_HARD:
+                System.out.println("[Manager]: Computation failed! Reason: " + funcType + " hard fail");
+                break;
+            case FAIL_LIMIT_REACHED:
+                System.out.println("[Manager]: Computation failed! Reason: " + funcType + " hard fail - 3/3 attempts reached");
+                break;
         }
-        if (!gFinished) {
-            fFinished = true;
-            sendCommand("b", gWriter);
-        }
-        System.out.println("[Manager]: Computation failed! Reason: " + funcType + " hard failed");
-        computationFailed = true;
     }
 
     private void killProcesses() {
@@ -160,52 +165,31 @@ public class Manager {
         if (gProcess.isAlive()) gProcess.destroy();
     }
 
-    private FunctionStatus analyzeF(String result) {
+    private FunctionStatus analyze(String result, char funcType) {
         /*
-        value F1
-        undefined F
-        soft fail f
-        hard fail ff
+        value - "v1"
+        undefined - "undefined"
+        max amount of attempts reached - "hard_limit_reached"
+        hard fail - "hard"
          */
         if (result == null) {
             return FunctionStatus.FAIL_CANCELLED;
         }
-        if (result.startsWith("F") && result.length() > 1) {
-            fResult = Optional.of(Integer.parseInt(result.substring(1)));
+        if (result.startsWith("v")) {
+            if (funcType == 'f')
+                fResult = Optional.of(Integer.parseInt(result.substring(1)));
+            else
+                gResult = Optional.of(Integer.parseInt(result.substring(1)));
             return FunctionStatus.VALUE;
         }
 
-        if (result.equals("F")) {
+        if (result.equals("undefined")) {
             return FunctionStatus.UNDEFINED;
         }
-        if (result.equals("f")) {
+        if (result.equals("hard_limit_reached")) {
             return FunctionStatus.FAIL_LIMIT_REACHED;
         }
         return FunctionStatus.FAIL_HARD;
     }
 
-    private FunctionStatus analyzeG(String result) {
-        /*
-        value G1
-        undefined G
-        soft fail g
-        hard fail gg
-         */
-        if (result == null) {
-            return FunctionStatus.FAIL_CANCELLED;
-        }
-        if (result.startsWith("G") && result.length() > 1) {
-            gResult = Optional.of(Integer.parseInt(result.substring(1)));
-            return FunctionStatus.VALUE;
-        }
-
-        if (result.equals("G")) {
-            return FunctionStatus.UNDEFINED;
-        }
-        if (result.equals("g")) {
-            return FunctionStatus.FAIL_LIMIT_REACHED;
-        }
-
-        return FunctionStatus.FAIL_HARD;
-    }
 }
