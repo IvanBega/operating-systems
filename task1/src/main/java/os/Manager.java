@@ -39,6 +39,7 @@ public class Manager {
             //p2 = pb2.start();
             System.out.println("[Manager]: Successfully started F and G");
         } catch (IOException e) {
+            System.out.println("[Manager]: Error! Could not start processes");
             e.printStackTrace();
         }
         fReader = new BufferedReader(new InputStreamReader(fProcess.getInputStream()));
@@ -54,38 +55,58 @@ public class Manager {
                     Thread.sleep(5000);
                     boolean result = cancellator.check();
                     if (result) {
+                        // if user decided to cancel
                         killProcesses();
                     }
                 } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
+                    System.out.println("Bye");
                 }
             }
         });
         cancelThread.start();
+
         String result1 = fReader.readLine();
-
         FunctionStatus fStatus = analyze(result1, 'f');
-        System.out.println(result1);
         System.out.println(fStatus);
-        String result2 = gReader.readLine();
-        FunctionStatus gStatus = analyze(result2, 'g');
-        System.out.println(result2);
-        System.out.println(gStatus);
+        String result2;
+        FunctionStatus gStatus = FunctionStatus.FAIL_HARD;
+        if (isStatusFail(fStatus)) {
+            killProcesses();
+        } else {
+             result2 = gReader.readLine();
+             gStatus = analyze(result2, 'g');
+             System.out.println(gStatus);
+        }
 
+        //System.out.println(result2);
+        //System.out.println(gStatus);
+        cancellator.setActive(false);
+
+        // to not intervene in user prompt
         while (cancellator.isBlocked()) {
             Thread.sleep(50);
         }
+
         if (cancellator.wasInterrupted()) {
+            // check if result can be computed immediately, if user decided to cancel
             trySummarize(fStatus, gStatus);
         } else {
+            // user did not cancel - routine summarization
             summarize(fStatus, gStatus);
         }
         killProcesses();
-        cancellator.setActive(false);
+        cancelThread.interrupt();
+
     }
 
     private void trySummarize(FunctionStatus fStatus, FunctionStatus gStatus) {
         if (fStatus == FunctionStatus.VALUE && gStatus == FunctionStatus.VALUE) {
+            // both F and G finished and returned a value - result can be computed
+            summarize(fStatus, gStatus);
+        } else {
+            // both F and G finished, but result can not be computed
+            fStatus = FunctionStatus.FAIL_CANCELLED;
+            gStatus = FunctionStatus.FAIL_CANCELLED;
             summarize(fStatus, gStatus);
         }
     }
@@ -139,7 +160,7 @@ public class Manager {
         }
     }
 
-    private void askForInputAndRun() throws IOException, InterruptedException {
+    private void askForInputAndRun() throws IOException {
         argument = askForInput();
         if (argument.startsWith("q")) return;
         sendCommand(argument, fWriter);

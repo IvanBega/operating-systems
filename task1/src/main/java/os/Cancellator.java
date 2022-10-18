@@ -1,5 +1,6 @@
 package os;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Cancellator {
@@ -16,7 +17,8 @@ public class Cancellator {
         printOptions();
         Scanner scanner = new Scanner(System.in);
         blocked = true;
-        int option = scanner.nextInt();
+        int option = 3;
+        option = scanner.nextInt();
         blocked = false;
         switch (option) {
             case 1:
@@ -38,7 +40,7 @@ public class Cancellator {
         System.out.println("2 - continue without prompt");
         System.out.println("3 - cancel");
     }
-    public void setActive(boolean active) {
+    public void setActive(boolean active) throws IOException {
         this.active = active;
     }
 
