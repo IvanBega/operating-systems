@@ -13,11 +13,6 @@ public class Manager {
     private Optional<Integer> fResult = Optional.empty();
     private Optional<Integer> gResult = Optional.empty();
     private final int maxAttempts = 3;
-    private int fAttempts = 0;
-    private int gAttempts = 0;
-    private boolean fFinished = false;
-    private boolean gFinished = false;
-    private boolean computationFailed = false;
     String argument = "";
 
     public void start() throws IOException, InterruptedException {

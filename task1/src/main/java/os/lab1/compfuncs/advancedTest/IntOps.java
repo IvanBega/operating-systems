@@ -1,12 +1,43 @@
-package os.lab1.compfuncs.advanced;
+package os.lab1.compfuncs.advancedTest;
 
-import javax.swing.plaf.basic.BasicOptionPaneUI;
-import javax.swing.text.html.Option;
 import java.util.Optional;
+import java.util.Random;
 
-public static class IntOps {
-    public static Optional<Optional<Integer>> trialF(int x) {
-        Optional<Optional<Integer>> result = Optional.of(Optional.of(5));
-        return result;
+public class IntOps {
+    private static Random random = new Random();
+    public IntOps() {
+    }
+    public static Optional<Optional<Integer>> trialF(int x) throws InterruptedException {
+        if (x % 4 == 0) {
+            throw new InterruptedException();
+        }
+        Thread.sleep(random.nextInt(3)*1000);
+        int option = random.nextInt(10);
+        if (option < 5) {
+            return Optional.empty();
+        }
+
+        if (x * x > 40) {
+            return Optional.of(Optional.empty());
+        }
+
+        return Optional.of(Optional.of(x * 2));
+    }
+
+    public static Optional<Optional<Integer>> trialG(int x) throws InterruptedException {
+        if (x < 3) {
+            throw new InterruptedException();
+        }
+        Thread.sleep(random.nextInt(3)*1000);
+        int option = random.nextInt(10);
+        if (option < 8) {
+            return Optional.empty();
+        }
+
+        if (x % 5 == 0) {
+            return Optional.of(Optional.empty());
+        }
+
+        return Optional.of(Optional.of(x + 4));
     }
 }

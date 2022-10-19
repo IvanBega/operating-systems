@@ -1,6 +1,6 @@
 package os;
 
-import os.lab1.compfuncs.advanced.IntOps;
+import os.lab1.compfuncs.advancedTest.IntOps;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -31,44 +31,43 @@ public class ComputationProcess {
     private static void initialize() {
         reader = new BufferedReader(new InputStreamReader(System.in));
     }
-    private static void beginComputation(Timeout timeout) throws InterruptedException {
+    private static void beginComputation(Timeout timeout) {
         Optional<Optional<Integer>> result = null;
         try {
-            if (type == 'F') result = IntOps.trialF(x); else result = IntOps.trialG(x);
-            if (!result.isPresent()) {
-                // soft fail
-                if (attempts == MAX_ATTEMPTS - 1) {
-                    // hard fail if max amount of attempts reached
-                    finished = true;
-                    command = "hard_limit_reached";
-                }
-            } else if (result.get().isPresent()) {
-                // value
-                x = result.get().get();
-                command = "v" + x;
-                finished = true;
-            } else {
-                // undefined
-                command = "undefined";
-                finished = true;
-
-            }
-            timeout.setActive(false);
-        } catch (InterruptedException e) {
+            if (type == 'F') result = IntOps.trialF(x);
+            else result = IntOps.trialG(x);
+        }
+        catch (InterruptedException e) {
             // hard fail
             finished = true;
             command = "hard";
         }
+        if (!result.isPresent()) {
+            // soft fail
+            attempts++;
+            if (attempts == MAX_ATTEMPTS) {
+                // hard fail if max amount of attempts reached
+                finished = true;
+                command = "hard_limit_reached";
+
+            }
+        } else if (result.get().isPresent()) {
+            // value
+            x = result.get().get();
+            command = "v" + x;
+            finished = true;
+        } else {
+            // undefined
+            command = "undefined";
+            finished = true;
+
+        }
+        timeout.setActive(false);
     }
     private static void listenForCommand() throws IOException, InterruptedException {
         Timeout timeout = new Timeout(10000);
         computationThread = new Thread(() -> {
-            try {
-
-                beginComputation(timeout);
-            } catch (InterruptedException e) {
-                System.out.println(e);
-            }
+            beginComputation(timeout);
         });
         computationThread.start();
         timeout.start(); // main thread blocked until computation finished or timeout reached
