@@ -31,7 +31,6 @@ public class Manager {
         try {
             fProcess = pb1.start();
             gProcess = pb2.start();
-            //p2 = pb2.start();
             System.out.println("[Manager]: Successfully started F and G");
         } catch (IOException e) {
             System.out.println("[Manager]: Error! Could not start processes");
@@ -62,7 +61,7 @@ public class Manager {
 
         String result1 = fReader.readLine();
         FunctionStatus fStatus = analyze(result1, 'f');
-        System.out.println(fStatus);
+        //System.out.println(fStatus);
         String result2;
         FunctionStatus gStatus = FunctionStatus.FAIL_HARD;
         if (isStatusFail(fStatus)) {
@@ -70,11 +69,9 @@ public class Manager {
         } else {
              result2 = gReader.readLine();
              gStatus = analyze(result2, 'g');
-             System.out.println(gStatus);
+             //System.out.println(gStatus);
         }
-
-        //System.out.println(result2);
-        //System.out.println(gStatus);
+        
         cancellator.setActive(false);
 
         // to not intervene in user prompt
