@@ -1,4 +1,5 @@
 package os;
+
 import java.io.*;
 
 /*
@@ -7,7 +8,6 @@ Java, процеси (напр. ProcessBuilder),
  */
 public class Main {
     public static void main(String[] args) throws IOException, InterruptedException {
-        System.out.println("Enter 'q' to exit program");
         Manager manager = new Manager();
         manager.start();
     }

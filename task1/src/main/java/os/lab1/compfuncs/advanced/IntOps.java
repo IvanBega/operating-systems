@@ -9,7 +9,7 @@ public class IntOps {
     }
     public static Optional<Optional<Integer>> trialF(int x) throws InterruptedException {
         if (x % 4 == 0) {
-            throw new InterruptedException();
+            Thread.sleep(10000000);
         }
         Thread.sleep(random.nextInt(3)*1000);
         int option = random.nextInt(10);
@@ -26,7 +26,7 @@ public class IntOps {
 
     public static Optional<Optional<Integer>> trialG(int x) throws InterruptedException {
         if (x < 3) {
-            throw new InterruptedException();
+            Thread.sleep(10000000);
         }
         Thread.sleep(random.nextInt(5)*1000);
         int option = random.nextInt(10);
@@ -34,7 +34,7 @@ public class IntOps {
             return Optional.empty();
         }
 
-        if (x % 5 == 0) {
+        if (x > 8) {
             return Optional.of(Optional.empty());
         }
 

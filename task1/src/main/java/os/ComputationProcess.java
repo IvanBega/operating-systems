@@ -22,7 +22,7 @@ public class ComputationProcess {
         String input = reader.readLine();
         x = Integer.parseInt(input);
         while(!finished) {
-            listenForCommand();
+            beginComputation();
         }
         sendCommand(command);
 
@@ -31,16 +31,13 @@ public class ComputationProcess {
     private static void initialize() {
         reader = new BufferedReader(new InputStreamReader(System.in));
     }
-    private static void beginComputation(Timeout timeout) {
+    private static void beginComputation() {
         Optional<Optional<Integer>> result = null;
         try {
             if (type == 'F') result = IntOps.trialF(x);
             else result = IntOps.trialG(x);
         }
         catch (InterruptedException e) {
-            // hard fail
-            finished = true;
-            command = "hard";
         }
         if (!result.isPresent()) {
             // soft fail
@@ -57,25 +54,13 @@ public class ComputationProcess {
             command = "v" + x;
             finished = true;
         } else {
-            // undefined
-            command = "undefined";
+            // hard fail
+            command = "hard";
             finished = true;
 
         }
-        timeout.setActive(false);
     }
     private static void listenForCommand() throws IOException, InterruptedException {
-        Timeout timeout = new Timeout(10000);
-        computationThread = new Thread(() -> {
-            beginComputation(timeout);
-        });
-        computationThread.start();
-        timeout.start(); // main thread blocked until computation finished or timeout reached
-        if (timeout.wasInterrupted()) {
-            // was interrupted - function not defined
-            finished = true;
-            command = "undefined";
-        }
     }
     private static void sendCommand(String cmd) {
         System.out.println(cmd);

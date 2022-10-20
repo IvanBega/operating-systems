@@ -182,7 +182,7 @@ public class Manager {
         Scanner sc = new Scanner(System.in);
         String input = "";
         while (!isIntOrQuit(input)) {
-            System.out.println("Enter x or 'q' to exit: ");
+            System.out.println("Enter x: ");
             input = sc.nextLine();
         }
         return input;
