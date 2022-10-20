@@ -3,6 +3,7 @@ package os;
 import java.io.*;
 import java.util.Optional;
 import java.util.Scanner;
+
 public class Manager {
     private BufferedReader fReader;
     private BufferedReader gReader;
@@ -13,6 +14,10 @@ public class Manager {
     private Optional<Integer> fResult = Optional.empty();
     private Optional<Integer> gResult = Optional.empty();
     private final int maxAttempts = 3;
+    private String result1;
+    private String result2;
+    private FunctionStatus fStatus;
+    private FunctionStatus gStatus;
     String argument = "";
 
     public void start() throws IOException, InterruptedException {
@@ -53,13 +58,12 @@ public class Manager {
                         killProcesses();
                     }
                 } catch (InterruptedException e) {
-                    System.out.println("Bye");
                 }
             }
         });
         cancelThread.start();
 
-        String result1 = fReader.readLine();
+        /*String result1 = fReader.readLine();
         FunctionStatus fStatus = analyze(result1, 'f');
         //System.out.println(fStatus);
         String result2;
@@ -71,7 +75,7 @@ public class Manager {
              gStatus = analyze(result2, 'g');
              //System.out.println(gStatus);
         }
-        
+
         cancellator.setActive(false);
 
         // to not intervene in user prompt
@@ -87,7 +91,48 @@ public class Manager {
             summarize(fStatus, gStatus);
         }
         killProcesses();
+        cancelThread.interrupt(); */
+        Thread gThread = new Thread(() -> {
+            try {
+                result2 = gReader.readLine();
+                System.out.println("G finished");
+                if (result2 != null) {
+                    gStatus = analyze(result2, 'g');
+                    System.out.println(gStatus);
+                    if (isStatusFail(gStatus)) {
+                        killProcesses();
+                    }
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        gThread.start();
+
+        result1 = fReader.readLine();
+        if (result1 != null) {
+            fStatus = analyze(result1, 'f');
+            System.out.println(fStatus);
+            if (isStatusFail(fStatus)) {
+                killProcesses();
+            }
+        }
+        System.out.println("F finished");
+        gThread.join();
+
+        while (cancellator.isBlocked()) {
+            Thread.sleep(50);
+        }
+
+        if (cancellator.wasInterruptedByUser()) {
+            trySummarize(fStatus, gStatus);
+        } else {
+            summarize(fStatus, gStatus);
+        }
+
+        cancellator.setActive(false);
         cancelThread.interrupt();
+
 
     }
 
@@ -104,6 +149,7 @@ public class Manager {
     }
 
     private void summarize(FunctionStatus fStatus, FunctionStatus gStatus) {
+        killProcesses();
         if (isStatusFail(fStatus)) {
             failedComputation('F', fStatus);
             return;

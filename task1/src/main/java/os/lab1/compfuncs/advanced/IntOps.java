@@ -1,4 +1,4 @@
-package os.lab1.compfuncs.advancedTest;
+package os.lab1.compfuncs.advanced;
 
 import java.util.Optional;
 import java.util.Random;
@@ -17,7 +17,7 @@ public class IntOps {
             return Optional.empty();
         }
 
-        if (x * x > 40) {
+        if (x > 10) {
             return Optional.of(Optional.empty());
         }
 
@@ -28,9 +28,9 @@ public class IntOps {
         if (x < 3) {
             throw new InterruptedException();
         }
-        Thread.sleep(random.nextInt(3)*1000);
+        Thread.sleep(random.nextInt(5)*1000);
         int option = random.nextInt(10);
-        if (option < 8) {
+        if (option < 5) {
             return Optional.empty();
         }
 

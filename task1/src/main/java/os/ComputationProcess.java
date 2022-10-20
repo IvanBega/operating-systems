@@ -1,6 +1,6 @@
 package os;
 
-import os.lab1.compfuncs.advancedTest.IntOps;
+import os.lab1.compfuncs.advanced.IntOps;
 
 import java.io.BufferedReader;
 import java.io.IOException;

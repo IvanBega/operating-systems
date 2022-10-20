@@ -47,5 +47,5 @@ public class Cancellator {
     public boolean isActive() {
         return active;
     }
-    public boolean wasInterrupted() { return interrupted; }
+    public boolean wasInterruptedByUser() { return interrupted; }
 }
