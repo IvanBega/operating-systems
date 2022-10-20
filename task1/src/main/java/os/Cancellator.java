@@ -7,12 +7,14 @@ public class Cancellator {
     private boolean active = true;
     private boolean blocked = false;
     private boolean interrupted = false;
+    private final int PERIOD = 5000;
     public Cancellator() {
     }
     public boolean isBlocked() {
         return blocked;
     }
-    public boolean check() {
+    public boolean check() throws InterruptedException {
+        Thread.sleep(PERIOD);
         if (!active) return false;
         printOptions();
         Scanner scanner = new Scanner(System.in);
@@ -33,14 +35,13 @@ public class Cancellator {
         }
         return false;
     }
-
     private void printOptions() {
         System.out.println("Please choose one of the following options: ");
         System.out.println("1 - continue");
         System.out.println("2 - continue without prompt");
         System.out.println("3 - cancel");
     }
-    public void setActive(boolean active) throws IOException {
+    public void setActive(boolean active) {
         this.active = active;
     }
 

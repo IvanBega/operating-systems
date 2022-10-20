@@ -21,18 +21,18 @@ public class Manager {
     String argument = "";
 
     public void start() throws IOException, InterruptedException {
+        /*
+        to compile with external jar(not used)
         ProcessBuilder pb1 = new ProcessBuilder("java", "-cp",
                 ".;C:\\DOCS\\Учеба\\5 semester\\OS\\task1\\src\\main\\resources\\lab1.jar", "os.ComputationProcess", "F");
         ProcessBuilder pb2 = new ProcessBuilder("java", "-cp",
                 ".;C:\\DOCS\\Учеба\\5 semester\\OS\\task1\\src\\main\\resources\\lab1.jar", "os.ComputationProcess", "G");
+         */
+        ProcessBuilder pb1 = new ProcessBuilder("java", "os.ComputationProcess", "F");
+        ProcessBuilder pb2 = new ProcessBuilder("java", "os.ComputationProcess", "G");
         pb1.directory(new File("C:\\DOCS\\Учеба\\5 semester\\OS\\task1\\target\\classes"));
-        pb1.redirectErrorStream(true);
         pb2.directory(new File("C:\\DOCS\\Учеба\\5 semester\\OS\\task1\\target\\classes"));
-        pb2.redirectErrorStream(true);
 
-
-        //pb1.inheritIO();
-        //pb2.inheritIO();
         try {
             fProcess = pb1.start();
             gProcess = pb2.start();
@@ -51,7 +51,7 @@ public class Manager {
         Thread cancelThread = new Thread(() -> {
             while (cancellator.isActive()) {
                 try {
-                    Thread.sleep(5000);
+
                     boolean result = cancellator.check();
                     if (result) {
                         // if user decided to cancel
@@ -63,35 +63,6 @@ public class Manager {
         });
         cancelThread.start();
 
-        /*String result1 = fReader.readLine();
-        FunctionStatus fStatus = analyze(result1, 'f');
-        //System.out.println(fStatus);
-        String result2;
-        FunctionStatus gStatus = FunctionStatus.FAIL_HARD;
-        if (isStatusFail(fStatus)) {
-            killProcesses();
-        } else {
-             result2 = gReader.readLine();
-             gStatus = analyze(result2, 'g');
-             //System.out.println(gStatus);
-        }
-
-        cancellator.setActive(false);
-
-        // to not intervene in user prompt
-        while (cancellator.isBlocked()) {
-            Thread.sleep(50);
-        }
-
-        if (cancellator.wasInterrupted()) {
-            // check if result can be computed immediately, if user decided to cancel
-            trySummarize(fStatus, gStatus);
-        } else {
-            // user did not cancel - routine summarization
-            summarize(fStatus, gStatus);
-        }
-        killProcesses();
-        cancelThread.interrupt(); */
         Thread gThread = new Thread(() -> {
             try {
                 result2 = gReader.readLine();
@@ -200,7 +171,6 @@ public class Manager {
 
     private void askForInputAndRun() throws IOException {
         argument = askForInput();
-        if (argument.startsWith("q")) return;
         sendCommand(argument, fWriter);
         sendCommand(argument, gWriter);
     }
@@ -226,25 +196,20 @@ public class Manager {
 
     private FunctionStatus analyze(String result, char funcType) {
         /*
-        value - "v1"
-        undefined - "undefined"
         max amount of attempts reached - "hard_limit_reached"
         hard fail - "hard"
          */
         if (result == null) {
             return FunctionStatus.FAIL_CANCELLED;
         }
-        if (result.startsWith("v")) {
+        if (!result.startsWith("hard")) {
             if (funcType == 'f')
-                fResult = Optional.of(Integer.parseInt(result.substring(1)));
+                fResult = Optional.of(Integer.parseInt(result));
             else
-                gResult = Optional.of(Integer.parseInt(result.substring(1)));
+                gResult = Optional.of(Integer.parseInt(result));
             return FunctionStatus.VALUE;
         }
 
-        if (result.equals("undefined")) {
-            return FunctionStatus.UNDEFINED;
-        }
         if (result.equals("hard_limit_reached")) {
             return FunctionStatus.FAIL_LIMIT_REACHED;
         }
