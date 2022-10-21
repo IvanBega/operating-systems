@@ -11,14 +11,13 @@ public class IntOps {
         if (x % 4 == 0) {
             Thread.sleep(10000000);
         }
+        if (x > 10) {
+            return Optional.of(Optional.empty());
+        }
         Thread.sleep(random.nextInt(3)*1000);
         int option = random.nextInt(10);
         if (option < 5) {
             return Optional.empty();
-        }
-
-        if (x > 10) {
-            return Optional.of(Optional.empty());
         }
 
         return Optional.of(Optional.of(x * 2));
@@ -28,14 +27,13 @@ public class IntOps {
         if (x < 3) {
             Thread.sleep(10000000);
         }
+        if (x > 8) {
+            return Optional.of(Optional.empty());
+        }
         Thread.sleep(random.nextInt(5)*1000);
         int option = random.nextInt(10);
         if (option < 8) {
             return Optional.empty();
-        }
-
-        if (x > 8) {
-            return Optional.of(Optional.empty());
         }
 
         return Optional.of(Optional.of(x + 4));
