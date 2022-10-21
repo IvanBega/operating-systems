@@ -112,10 +112,16 @@ public class Manager {
             // both F and G finished and returned a value - result can be computed
             summarize(fStatus, gStatus);
         } else {
-            // both F and G finished, but result can not be computed
-            fStatus = FunctionStatus.FAIL_CANCELLED;
-            gStatus = FunctionStatus.FAIL_CANCELLED;
+            // result can not be computed
+            if (!(isStatusFail(fStatus) || isStatusFail(gStatus))) {
+                // if neither of function failed - report that computation was canceled by user
+                fStatus = FunctionStatus.FAIL_CANCELLED;
+                gStatus = FunctionStatus.FAIL_CANCELLED;
+            }
+            // if any function failed - report that computation was because of
+            // function failure
             summarize(fStatus, gStatus);
+
         }
     }
 
@@ -152,14 +158,14 @@ public class Manager {
     private String askForInput() {
         Scanner sc = new Scanner(System.in);
         String input = "";
-        while (!isIntOrQuit(input)) {
+        while (!isInt(input)) {
             System.out.println("Enter x: ");
             input = sc.nextLine();
         }
         return input;
     }
 
-    private boolean isIntOrQuit(String value) {
+    private boolean isInt(String value) {
         if (value.startsWith("q")) return true; // exit condition
         try {
             Integer.parseInt(value);
@@ -184,7 +190,7 @@ public class Manager {
                 System.out.println("[Manager]: Computation failed! Reason: " + funcType + " hard fail");
                 break;
             case FAIL_LIMIT_REACHED:
-                System.out.println("[Manager]: Computation failed! Reason: " + funcType + " hard fail - 3/3 attempts reached");
+                System.out.println("[Manager]: Computation failed! Reason: " + funcType + " soft fail - 3/3 attempts reached");
                 break;
         }
     }
@@ -202,7 +208,8 @@ public class Manager {
         if (result == null) {
             return FunctionStatus.FAIL_CANCELLED;
         }
-        if (!result.startsWith("hard")) {
+        if (!result.startsWith("fail")) {
+            // value
             if (funcType == 'f')
                 fResult = Optional.of(Integer.parseInt(result));
             else
@@ -210,7 +217,7 @@ public class Manager {
             return FunctionStatus.VALUE;
         }
 
-        if (result.equals("hard_limit_reached")) {
+        if (result.equals("fail_limit_reached")) {
             return FunctionStatus.FAIL_LIMIT_REACHED;
         }
         return FunctionStatus.FAIL_HARD;

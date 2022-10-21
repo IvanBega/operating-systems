@@ -41,9 +41,9 @@ public class ComputationProcess {
             // soft fail
             attempts++;
             if (attempts == MAX_ATTEMPTS) {
-                // hard fail if max amount of attempts reached
+                // fail if max amount of attempts reached
                 finished = true;
-                command = "hard_limit_reached";
+                command = "fail_limit_reached";
 
             }
         } else if (result.get().isPresent()) {
@@ -53,7 +53,7 @@ public class ComputationProcess {
             finished = true;
         } else {
             // hard fail
-            command = "hard";
+            command = "fail";
             finished = true;
 
         }

@@ -30,7 +30,7 @@ public class IntOps {
         }
         Thread.sleep(random.nextInt(5)*1000);
         int option = random.nextInt(10);
-        if (option < 5) {
+        if (option < 8) {
             return Optional.empty();
         }
 
