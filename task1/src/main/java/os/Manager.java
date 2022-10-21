@@ -1,6 +1,7 @@
 package os;
 
 import java.io.*;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Scanner;
 
@@ -57,7 +58,9 @@ public class Manager {
                         // if user decided to cancel
                         killProcesses();
                     }
-                } catch (InterruptedException e) {
+                } catch (InterruptedException | NoSuchElementException e) {
+                    killProcesses();
+                    System.exit(1);
                 }
             }
         });
@@ -66,16 +69,14 @@ public class Manager {
         Thread gThread = new Thread(() -> {
             try {
                 result2 = gReader.readLine();
-                System.out.println("G finished");
                 if (result2 != null) {
                     gStatus = analyze(result2, 'g');
-                    System.out.println(gStatus);
                     if (isStatusFail(gStatus)) {
                         killProcesses();
                     }
                 }
             } catch (IOException e) {
-                throw new RuntimeException(e);
+
             }
         });
         gThread.start();
@@ -83,14 +84,13 @@ public class Manager {
         result1 = fReader.readLine();
         if (result1 != null) {
             fStatus = analyze(result1, 'f');
-            System.out.println(fStatus);
             if (isStatusFail(fStatus)) {
                 killProcesses();
             }
         }
-        System.out.println("F finished");
         gThread.join();
 
+        // to not intervene user prompt
         while (cancellator.isBlocked()) {
             Thread.sleep(50);
         }
@@ -160,7 +160,13 @@ public class Manager {
         String input = "";
         while (!isInt(input)) {
             System.out.println("Enter x: ");
-            input = sc.nextLine();
+            try {
+                input = sc.nextLine();
+            } catch (NoSuchElementException e) {
+                killProcesses();
+                System.exit(1);
+            }
+
         }
         return input;
     }

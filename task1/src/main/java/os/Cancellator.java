@@ -1,6 +1,7 @@
 package os;
 
 import java.io.IOException;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class Cancellator {
@@ -13,7 +14,7 @@ public class Cancellator {
     public boolean isBlocked() {
         return blocked;
     }
-    public boolean check() throws InterruptedException {
+    public boolean check() throws InterruptedException, NoSuchElementException {
         Thread.sleep(PERIOD);
         if (!active) return false;
         printOptions();
