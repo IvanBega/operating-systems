@@ -1,9 +1,12 @@
-Scheduling Type: Batch (Nonpreemptive)
-Scheduling Name: First-Come First-Served
-Simulation Run Time: 4053
+Scheduling Type: Preemptive
+Scheduling Name: Round-Robin
+Simulation Run Time: 1000
 Mean: 1100
 Standard Deviation: 510
-Process #	CPU Time	IO Blocking	CPU Completed	CPU Blocked
-0		1351 (ms)	100 (ms)	1351 (ms)	13 times
-1		1351 (ms)	500 (ms)	1351 (ms)	2 times
-2		1351 (ms)	30 (ms)		1351 (ms)	45 times
+Process #	CPU Time	CPU Completed	CPU Blocked	Arrival
+0		761 (ms)	350 (ms)	7 times
+ (ms)		20
+1		761 (ms)	330 (ms)	6 times
+ (ms)		40
+2		761 (ms)	300 (ms)	6 times
+ (ms)		60
