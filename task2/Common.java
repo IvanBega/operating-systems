@@ -53,6 +53,18 @@ public class Common {
             return false;
         }
     }
+	public static int R5(int X, int U) {
+        java.util.Random random = new java.util.Random();
+        int sign = random.nextInt(2);
+        int deviation = random.nextInt(U);
+        if (sign == 1) {
+            return X + deviation;
+        }
+		if (X - deviation <= 0) {
+			return 100;
+		}
+        return X - deviation;
+    }
 
 }
 

@@ -11,26 +11,26 @@ import java.io.*;
 
 public class SchedulingAlgorithm {
     private static PrintStream out;
+	private static int comptime = 0;
     private static void log(ProcessState state, int currentProcess,int cputime, int cpudone, int arrival) {
         switch (state) {
             case ARRIVED:
-                out.println("Process: " + currentProcess + " arrived... (" + cputime + " " + cpudone + " " + arrival + ")");
+                out.println(comptime + " | Process: " + currentProcess + " arrived... (" + cputime + " " + cpudone + " " + arrival + ")");
                 break;
             case INTERRUPTED:
-                out.println("Process: " + currentProcess + " interrupted... (" + cputime + " " + cpudone + " " + arrival + ")");
+                out.println(comptime + " | Process: " + currentProcess + " interrupted... (" + cputime + " " + cpudone + " " + arrival + ")");
                 break;
             case REGISTERED:
-                out.println("Process: " + currentProcess + " registered... (" + cputime + " " + cpudone + " " + arrival + ")");
+                out.println(comptime + " | Process: " + currentProcess + " registered... (" + cputime + " " + cpudone + " " + arrival + ")");
                 break;
             case COMPLETED:
-                out.println("Process: " + currentProcess + " completed... (" + cputime + " " + cpudone + " " + arrival + ")");
+                out.println(comptime + " | Process: " + currentProcess + " completed... (" + cputime + " " + cpudone + " " + arrival + ")");
                 break;
         }
     }
 
-    public static Results Run(int runtime, Vector processVector, Results result) {
+    public static Results run(int runtime, Vector processVector, Results result) {
         int i = 0;
-        int comptime = 0;
         int size = processVector.size();
         int completed = 0;
         int timeCount = 0;

@@ -1,12 +1,11 @@
 Scheduling Type: Preemptive
 Scheduling Name: Round-Robin
-Simulation Run Time: 1000
-Mean: 1100
-Standard Deviation: 510
+Simulation Run Time: 6280
+Mean: 500
+Standard Deviation: 1000
 Process #	CPU Time	CPU Completed	CPU Blocked	Arrival
-0		761 (ms)	350 (ms)	7 times
- (ms)		20
-1		761 (ms)	330 (ms)	6 times
- (ms)		40
-2		761 (ms)	300 (ms)	6 times
- (ms)		60
+0			922 (ms)	922 (ms)		18 times	20 (ms)
+1			1261 (ms)	1261 (ms)		25 times	400 (ms)
+2			1378 (ms)	1378 (ms)		27 times	560 (ms)
+3			1249 (ms)	1249 (ms)		24 times	870 (ms)
+4			1450 (ms)	1450 (ms)		28 times	915 (ms)

@@ -63,12 +63,13 @@ public class Scheduling {
                     StringTokenizer st = new StringTokenizer(line);
                     st.nextToken();
                     arrival = Common.s2i(st.nextToken());
-                    X = Common.R1();
+                    /*X = Common.R1();
                     while (X == -1.0) {
                         X = Common.R1();
                     }
                     X = X * standardDev;
-                    cputime = (int) X + meanDev;
+                    cputime = (int) X + meanDev;*/
+					cputime = Common.R5(standardDev, meanDev);
                     processVector.addElement(new Process(cputime, arrival));
                 }
             }
@@ -107,7 +108,7 @@ public class Scheduling {
                 i++;
             }
         }
-        result = SchedulingAlgorithm.Run(runtime, processVector, result);
+        result = SchedulingAlgorithm.run(runtime, processVector, result);
         try {
             //BufferedWriter out = new BufferedWriter(new FileWriter(resultsFile));
             PrintStream out = new PrintStream(new FileOutputStream(resultsFile));
@@ -119,15 +120,14 @@ public class Scheduling {
             out.println("Process #\tCPU Time\tCPU Completed\tCPU Blocked\tArrival");
             for (i = 0; i < processVector.size(); i++) {
                 Process process = (Process) processVector.elementAt(i);
-                out.print(Integer.toString(i));
+                out.print(Integer.toString(i)+"\t");
                 if (i < 100) { out.print("\t\t"); } else { out.print("\t"); }
                 out.print(Integer.toString(process.getCpuTime()));
                 if (process.getCpuTime() < 100) { out.print(" (ms)\t\t"); } else { out.print(" (ms)\t"); }
                 out.print(Integer.toString(process.getCpuDone()));
                 if (process.getCpuDone() < 100) { out.print(" (ms)\t\t"); } else { out.print(" (ms)\t"); }
-                out.println(process.getNumBlocked() + " times");
-                if (process.getNumBlocked() < 100) { out.print(" (ms)\t\t"); } else { out.print(" (ms)\t"); }
-                out.println(process.getArrival());
+                out.print("\t" + process.getNumBlocked() + " times\t");
+				out.println(process.getArrival() + " (ms)");
             }
             out.close();
         } catch (IOException e) { /* Handle exceptions */ }
