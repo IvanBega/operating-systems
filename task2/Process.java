@@ -4,7 +4,7 @@ public class Process {
 
     private int cputime;
     private int cpudone = 0;
-    private int numblocked = 0;
+    private int numinterrupted = 0;
     private int arrival;
     private int id;
 
@@ -23,8 +23,8 @@ public class Process {
     public int getCpuDone() {
         return cpudone;
     }
-    public int getNumBlocked() {
-        return numblocked;
+    public int getNumInterrupted() {
+        return numinterrupted;
     }
     public void setCpuTime(int time) {
         this.cputime = time;
@@ -32,8 +32,8 @@ public class Process {
     public void setCpuDone(int done) {
         this.cpudone = done;
     }
-    public void setNumBlocked(int numblocked) {
-        this.numblocked = numblocked;
+    public void setNumInterrupted(int numinterrupted) {
+        this.numinterrupted = numinterrupted;
     }
     public void setId(int id) {
         this.id = id;

@@ -81,7 +81,7 @@ public class SchedulingAlgorithm {
                     timeCount = 0;
                     log(ProcessState.INTERRUPTED, currentProcess.getId(), currentProcess.getCpuTime(),
                             currentProcess.getCpuDone(), currentProcess.getArrival());
-                    currentProcess.setNumBlocked(currentProcess.getNumBlocked()+1);
+                    currentProcess.setNumInterrupted(currentProcess.getNumInterrupted()+1);
                     queue.add(currentProcess);
                     if (!queue.isEmpty()) {
                         currentProcess = queue.remove();

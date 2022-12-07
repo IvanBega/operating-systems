@@ -126,7 +126,7 @@ public class Scheduling {
                 if (process.getCpuTime() < 100) { out.print(" (ms)\t\t"); } else { out.print(" (ms)\t"); }
                 out.print(Integer.toString(process.getCpuDone()));
                 if (process.getCpuDone() < 100) { out.print(" (ms)\t\t"); } else { out.print(" (ms)\t"); }
-                out.print("\t" + process.getNumBlocked() + " times\t");
+                out.print("\t" + process.getNumInterrupted() + " times\t");
 				out.println(process.getArrival() + " (ms)");
             }
             out.close();
